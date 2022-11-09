@@ -71,7 +71,7 @@ local options = {
     intro = {
       order = 1,
       type = "description",
-      name = \"/RollLogic on\" enables the roll logic.\n"   ..
+      name = "\"/RollLogic on\" enables the roll logic.\n"   ..
       "        \"/RollLogic off\" disables the roll logic and resets the routines.\n" ..
       "        \"/RollLogic h\" or \"?\" or \"help\" shows valid commands.\n" ..
       "        \"/RollLogic v\" or \"version\" shows current version.\n"
@@ -104,13 +104,12 @@ function RollLogic:OnCommand(input)
         print("Sorry, RollLogic is not enabled!")
       end
     elseif input == "v" or input == "version" then
-        print("Version: 1.0.0.1")
+        print("Version: 1.0.0.2")
     elseif input == "h" or input == "help" then
         print("\"/RollLogic on\" enables the roll logic.\n"   ..
       "        \"/RollLogic off\" disables the roll logic and resets the routines.\n" ..
       "        \"/RollLogic h\" or \"?\" or \"help\" shows valid commands.\n" ..
       "        \"/RollLogic v\" or \"version\" shows current version.\n")
-      end
     end
   end
 end
