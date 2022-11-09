@@ -8,5 +8,4 @@
 ## OptionalDeps: Ace3
 ## X-Embeds: Ace3
 
-embed.xml
 RollLogic.lua
