@@ -2,10 +2,11 @@
 ## Title: RollLogic |cff00aa006.0|r
 ## Author: friarbison
 ## Notes: Organizes rolls |cffB90A04Created by: Friarbison |r
-## Version: 0.0.0.1
+## Version: 1.0.0.5
 ## SavedVariables: RLContent
 ## SavedVariablesPerCharacter: RLPlayerContent
 ## OptionalDeps: Ace3
 ## X-Embeds: Ace3
+
 
 RollLogic.lua
