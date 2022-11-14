@@ -1,5 +1,8 @@
 local RollLogic = LibStub("AceAddon-3.0"):NewAddon("RollLogic", "AceConsole-3.0", "AceEvent-3.0")
-local t={}
+local CloseButton = CreateFrame("Button", "CloseButton", MainFrame)
+local ClearButton = CreateFrame("Button", "ClearButton", MainFrame)
+local SortButton = CreateFrame("Button", "SortButton", MainFrame)
+local t, Rolls = {}, 1
 local MainFrame = CreateFrame("Frame","MFrame", UIParent, BackdropTemplateMixin and "BackdropTemplate")
 --local RollFrame = nil
 local _Enabled = 0
@@ -13,7 +16,7 @@ local function TruncStr(str)
 end
 
 local function SplitString (incStr, sep, f )
-  local cnt, l= 1, {}
+  local cnt, l = 1, {}
   if sep == nil then
     sep = "%s"
   end
@@ -57,25 +60,26 @@ local function DoSort(task)
     return
   end
   
-  MainFrame:SetSize(length,height)
+  --MainFrame:SetSize(length,height)
   
   table.sort(t, function(a,b) return tonumber(a[3]) < tonumber(b[3]) end)
   for x,y in pairs(t) do  
     RollFrame = CreateFrame("Frame",fname..x, MainFrame, BackdropTemplateMixin and "BackdropTemplate")
     if x > 3 and x < 7 then        -- x is 4, 5, 6
       color = "\124cFF00FF00" --Green
+      if x == 6 then height = height + 20; MainFrame:SetSize(length,height) end
     elseif x > 6 and x < 10 then   -- x is 7, 8, 9
       color = "\124cFFFFA500" --Orange
-      if x == 7 then height = height + 40; MainFrame:SetSize(length,height) end
+      if x == 7 then height = height + 60; MainFrame:SetSize(length,height) end
     elseif x > 9 and x < 13 then   -- x is 10, 11, 12
       color = "\124cFFFFFF00" --Yellow
-      if x == 10 then height = height + 80; MainFrame:SetSize(length,height) end
+      if x == 10 then height = height + 60; MainFrame:SetSize(length,height) end
     elseif x > 12 and x < 16 then  -- x is 13, 14, 15
       color = "\124cFFC0C0C0" --Grey
-      if x == 13 then height = height + 120; MainFrame:SetSize(length,height) end
+      if x == 13 then height = height + 60; MainFrame:SetSize(length,height) end
     elseif x > 15 and x < 19 then  -- x is 16, 17, 18
       color = "\124cFF0000FF" --Blue      
-      if x == 16 then height = height + 160; MainFrame:SetSize(length,height)  end
+      if x == 16 then height = height + 60; MainFrame:SetSize(length,height)  end
     end
     if x == 1 then 
       pos = 5 
@@ -114,20 +118,13 @@ local function DoSort(task)
   MainFrame:SetSize(length,height)
   pos = MainFrame:GetHeight() - 22
   
-  RollFrame = CreateFrame("Frame","Legend", MainFrame, BackdropTemplateMixin and "BackdropTemplate")
-  RollFrame:SetPoint("TOPLEFT", 1, -1*pos)
-  RollFrame:SetSize(length,21)
---    RollFrame:SetBackdrop({
---      bgFile = "Interface/Tooltips/UI-Tooltip-Background",
---      edgeFile = "Interface/Tooltips/UI-Tooltip-Border",
---      edgeSize = 10,
---    insets = { left = 1, right = 1, top = 1, bottom = 1 },
---    })
---    RollFrame:SetBackdropColor(0, 0, 1, .33)
-  RollFrame.text = RollFrame:CreateFontString(nil,"ARTWORK") 
-  RollFrame.text:SetFont("Fonts\\ARIALN.ttf", 12, "OUTLINE")
-  RollFrame.text:SetPoint("LEFT", 0, 0)
-  RollFrame.text:SetText(" \"*\" Player has multiple rolls. \">\" Rolls are duplicated.")
+--  RollFrame = CreateFrame("Frame","Legend", MainFrame, BackdropTemplateMixin and "BackdropTemplate")
+--  RollFrame:SetPoint("TOPLEFT", 1, -1*pos)
+--  RollFrame:SetSize(length,21)
+--  RollFrame.text = RollFrame:CreateFontString(nil,"ARTWORK") 
+--  RollFrame.text:SetFont("Fonts\\ARIALN.ttf", 12, "OUTLINE")
+--  RollFrame.text:SetPoint("LEFT", 0, 0)
+--  RollFrame.text:SetText(" \"*\" Player has multiple rolls. \">\" Rolls are duplicated.")
   --MainFrame.text:SetText(fText)
 end
 
@@ -135,6 +132,8 @@ local function OnEvent(self, event, ...)
   local str = select(1,...)
   if string.find(str, " rolls ") then
     SplitString(str)
+    SortButton:SetText("Sort [" .. tostring(Rolls) .. "]")
+    Rolls = Rolls + 1
   end
 end
 
@@ -160,6 +159,14 @@ local defaults = {
   }
 }
 
+local function ResetData ()
+  DoSort(0)
+  t={}
+  SortButton:SetText("Sort")
+  Rolls = 1
+  MainFrame.text:SetText(" \"*\" Player has multiple rolls. \">\" Rolls are duplicated.")
+end
+
 function RollLogic:OnCommand(input)
   if self:GetName() == "RollLogic" then  
     if input == "on" then
@@ -170,11 +177,17 @@ function RollLogic:OnCommand(input)
       MainFrame:RegisterEvent("CHAT_MSG_SYSTEM")
       MainFrame:SetScript("OnEvent", OnEvent)
       MainFrame:Show()
+      ClearButton:Show()
+      CloseButton:Show()
+      SortButton:Show()
     elseif input == "off" then
       _Enabled = 0
       MainFrame:UnregisterEvent("CHAT_MSG_SYSTEM")
       t={}
       print("RollLogic is off")
+      ClearButton:Hide()
+      CloseButton:Hide()
+      SortButton:Hide()
       MainFrame:Hide()
       DoSort(0)
     elseif input == "sort" or input == "s" then
@@ -184,7 +197,7 @@ function RollLogic:OnCommand(input)
         print("Sorry, RollLogic is not enabled!")
       end
     elseif input == "v" or input == "version" then
-        print("Version: 1.0.0.2")
+        print("Version: 1.0.0.5")
     elseif input == "h" or input == "help" then
         print("\"/RollLogic on\" enables the roll logic.\n"   ..
       "        \"/RollLogic off\" disables the roll logic and resets the routines.\n" ..
@@ -224,9 +237,9 @@ function RollLogic:ADDON_LOADED()
   })
   MainFrame:SetBackdropColor(0, 0, 1, .33)
   MainFrame.text = MainFrame:CreateFontString(nil,"ARTWORK") 
-  MainFrame.text:SetFont("Fonts\\ARIALN.ttf", 16, "OUTLINE")
-  MainFrame.text:SetPoint("TOPLEFT", -2, -10)
-  MainFrame.text:SetText("")
+  MainFrame.text:SetFont("Fonts\\ARIALN.ttf", 14, "OUTLINE")
+  MainFrame.text:SetPoint("BOTTOM", 1, 25) 
+  MainFrame.text:SetText(" \"*\" Player has multiple rolls. \">\" Rolls are duplicated.")
   MainFrame:Hide()
   self:UnregisterEvent("ADDON_LOADED")
 end
@@ -240,6 +253,95 @@ function RollLogic:OnDisable()
   print("RollLogic is disabled.")
   self:RegisterEvent("ADDON_LOADED")
 end
+
+  --ClearButton:SetPoint("LEFT", MainFrame, "BOTTOM", 0, 10)
+  ClearButton:SetPoint("BOTTOMLEFT", MainFrame, 0, 2)
+  ClearButton:SetWidth(35)
+  ClearButton:SetHeight(14)
+
+  ClearButton:SetText("Clear")
+  ClearButton:SetNormalFontObject("GameFontNormal")
+
+  local cbntex = ClearButton:CreateTexture()
+  cbntex:SetTexture("Interface/Buttons/UI-Panel-Button-Up")
+  cbntex:SetTexCoord(0, 0.625, 0, 0.6875)
+  cbntex:SetAllPoints()	
+  ClearButton:SetNormalTexture(cbntex)
+
+  local cbhtex = ClearButton:CreateTexture()
+  cbhtex:SetTexture("Interface/Buttons/UI-Panel-Button-Highlight")
+  cbhtex:SetTexCoord(0, 0.625, 0, 0.6875)
+  cbhtex:SetAllPoints()
+  ClearButton:SetHighlightTexture(cbhtex)
+
+  local cbptex = ClearButton:CreateTexture()
+  cbptex:SetTexture("Interface/Buttons/UI-Panel-Button-Down")
+  cbptex:SetTexCoord(0, 0.625, 0, 0.6875)
+  cbptex:SetAllPoints()
+  ClearButton:SetPushedTexture(cbptex)
+
+  ClearButton:SetScript("OnClick", function(self) ResetData() end)
+
+  ClearButton:Hide()
+  --------------------------------------------------------------------------
+  --CloseButton:SetPoint("Right", MainFrame, "BOTTOM", 0, 10)
+  CloseButton:SetPoint("BOTTOMRIGHT", MainFrame, 0, 2)
+  CloseButton:SetWidth(35)
+  CloseButton:SetHeight(14)
+
+  CloseButton:SetText("Close")
+  CloseButton:SetNormalFontObject("GameFontNormal")
+
+  local clsNtx = CloseButton:CreateTexture()
+  clsNtx:SetTexture("Interface/Buttons/UI-Panel-Button-Up")
+  clsNtx:SetTexCoord(0, 0.625, 0, 0.6875)
+  clsNtx:SetAllPoints()	
+  CloseButton:SetNormalTexture(clsNtx)
+
+  local clsHtx = CloseButton:CreateTexture()
+  clsHtx:SetTexture("Interface/Buttons/UI-Panel-Button-Highlight")
+  clsHtx:SetTexCoord(0, 0.625, 0, 0.6875)
+  clsHtx:SetAllPoints()
+  CloseButton:SetHighlightTexture(clsHtx)
+
+  local clsPtx = CloseButton:CreateTexture()
+  clsPtx:SetTexture("Interface/Buttons/UI-Panel-Button-Down")
+  clsPtx:SetTexCoord(0, 0.625, 0, 0.6875)
+  clsPtx:SetAllPoints()
+  CloseButton:SetPushedTexture(clsPtx)
+
+  CloseButton:SetScript("OnClick", function(self) RollLogic:OnCommand("off") end)
+
+  CloseButton:Hide()
+  ---------------------------------------------------------------------------------------
+  SortButton:SetPoint("Bottom", MainFrame, 0, 2)  -- , "BOTTOM", 0, 7)
+  SortButton:SetWidth(65)
+  SortButton:SetHeight(14)
+
+  SortButton:SetText("Sort")
+  SortButton:SetNormalFontObject("GameFontNormal")
+
+  local srtNtx = SortButton:CreateTexture()
+  srtNtx:SetTexture("Interface/Buttons/UI-Panel-Button-Up")
+  srtNtx:SetTexCoord(0, 0.625, 0, 0.6875)
+  srtNtx:SetAllPoints()	
+  SortButton:SetNormalTexture(srtNtx)
+
+  local srtHtx = SortButton:CreateTexture()
+  srtHtx:SetTexture("Interface/Buttons/UI-Panel-Button-Highlight")
+  srtHtx:SetTexCoord(0, 0.625, 0, 0.6875)
+  srtHtx:SetAllPoints()
+  SortButton:SetHighlightTexture(srtHtx)
+
+  local srtPtx = SortButton:CreateTexture()
+  srtPtx:SetTexture("Interface/Buttons/UI-Panel-Button-Down")
+  srtPtx:SetTexCoord(0, 0.625, 0, 0.6875)
+  srtPtx:SetAllPoints()
+  SortButton:SetPushedTexture(srtPtx)
+
+  SortButton:SetScript("OnClick", function(self) RollLogic:OnCommand("sort") end)
+
+  SortButton:Hide()
 
 MainFrame:Hide()
 
