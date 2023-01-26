@@ -1,12 +1,12 @@
 Welcome to the RollLogic wiki!   (Everything is a Work-In-Progress)
  
-RollLogic is an addon that can offer assistance when rolls are used to determined group members or distribute loot.  It can be commanded completely with slash commands but once activated, the frame has the necessary tools, buttons, to complete the task and dismiss the addon. The slash shortcut for '/RollLogic' is '/rl', if you are like me and typing is work.
+RollLogic is an addon that can offer assistance when rolls are used to determined group members or distribute loot.  It can be commanded completely with slash commands but once activated, the frame has the necessary tools, buttons, to complete the task and dismiss the addon. The slash shortcut for '/RollLogic' is '/rol', if you are like me and typing is work.
 
 Slash Commands:
-‘/rl on’ will activate the addon and display the frame. 
-‘/rl off’ dismisses the addon.
-‘/rl v’ show the current version. 
-‘/rl s" or ‘/rl sort’ will sort the rolls AFTER everyone has rolled.  
+‘/rol on’ will activate the addon and display the frame. 
+‘/rol off’ dismisses the addon.
+‘/rol v’ show the current version. 
+‘/rol s" or ‘/rol sort’ will sort the rolls AFTER everyone has rolled.  
 	Be sure to have the addon activated prior to rolls beginning.
 
 I don't want to get into your business at all, but you probably need or have a designated lead to direct the flow when forming groups or distributing loot.  Everyone who has the addon will be able to perform the same so it would seem chaotic for more than one to announce results.  Just sayin'.
