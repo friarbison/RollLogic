@@ -16,7 +16,7 @@ local function TruncStr(str)
 end
 
 local function SplitString (incStr, sep, f )
-  local cnt, l = 1, {}
+  local cnt, l, modded = 1, {}, 0
   if sep == nil then
     sep = "%s"
   end
@@ -26,19 +26,22 @@ local function SplitString (incStr, sep, f )
   end 
   
   for str in string.gmatch(incStr, "([^"..sep.."]+)") do
-    --print("SplitString[" .. cnt .. "]: <" .. str .. ">.")
-    for x,y in pairs(t) do
+    --print("SplitString[" .. cnt .. "]: <" .. str .. ">.  Trunc = " .. TruncStr(str))
+    for x,y in pairs(t) do      
       if t[x][1] == TruncStr(str) then
-        str = "* ".. str
-        --print("Duplicate entry")
+        str = " * " .. str
+        --print("Dual roll (tx1)" .. t[x][1])
+        modded = 1
         break
       end
       if t[x][3] == TruncStr(str) then
-        t[x][1] = "> ".. t[x][1]
-        --print("Duplicate entry")
+        t[x][1] = " > " .. t[x][1]
+        --print("Duplicate roll (tx3)" .. t[x][3])
+        modded = 1
         break
-      end
+      end 
     end
+    
     table.insert(l, TruncStr(str))    
     cnt = cnt + 1
   end
@@ -48,7 +51,7 @@ local function SplitString (incStr, sep, f )
 end
 
 local function DoSort(task)
-  local SwitchColor, color, fText, fname, pos, height, length = 1, "\124cFFFF0000", nil, "RFrame", 1, 120, 300
+  local SwitchColor, color, fText, fname, pos, height, length = 1, "\124cFFFF0000", nil, "RFrame", 1, 160, 600
   local RollFrame = nil
   
   if task ~= 1 then
@@ -60,44 +63,44 @@ local function DoSort(task)
     return
   end
   
-  --MainFrame:SetSize(length,height)
+  --print("1. Length = " .. length .. " and Height is " .. height)
+  
+  MainFrame:SetSize(length,height)
   
   table.sort(t, function(a,b) return tonumber(a[3]) < tonumber(b[3]) end)
   for x,y in pairs(t) do  
     RollFrame = CreateFrame("Frame",fname..x, MainFrame, BackdropTemplateMixin and "BackdropTemplate")
     if x > 3 and x < 7 then        -- x is 4, 5, 6
       color = "\124cFF00FF00" --Green
-      if x == 6 then height = height + 20; MainFrame:SetSize(length,height) end
+      if x == 6 then height = height + 30; MainFrame:SetSize(length,height) end
+      --print("1. Length = " .. length .. " and Height is " .. height)
     elseif x > 6 and x < 10 then   -- x is 7, 8, 9
       color = "\124cFFFFA500" --Orange
-      if x == 7 then height = height + 60; MainFrame:SetSize(length,height) end
+      if x == 7 then height = height + 100; MainFrame:SetSize(length,height) end
+      --print("2. Length = " .. length .. " and Height is " .. height)
     elseif x > 9 and x < 13 then   -- x is 10, 11, 12
       color = "\124cFFFFFF00" --Yellow
-      if x == 10 then height = height + 60; MainFrame:SetSize(length,height) end
+      if x == 10 then height = height + 100; MainFrame:SetSize(length,height) end
+      --print("3. Length = " .. length .. " and Height is " .. height)
     elseif x > 12 and x < 16 then  -- x is 13, 14, 15
       color = "\124cFFC0C0C0" --Grey
-      if x == 13 then height = height + 60; MainFrame:SetSize(length,height) end
+      if x == 13 then height = height + 100; MainFrame:SetSize(length,height) end
+      --print("4. Length = " .. length .. " and Height is " .. height)
     elseif x > 15 and x < 19 then  -- x is 16, 17, 18
       color = "\124cFF0000FF" --Blue      
-      if x == 16 then height = height + 60; MainFrame:SetSize(length,height)  end
+      if x == 16 then height = height + 100; MainFrame:SetSize(length,height)  end
+      --print("5. Length = " .. length .. " and Height is " .. height)
     end
     if x == 1 then 
       pos = 5 
     else 
-      pos = pos + 21
+      pos = pos + 31
     end
     
     RollFrame:SetPoint("TOPLEFT", 1, -1*pos)
-    RollFrame:SetSize(length,21)
---    RollFrame:SetBackdrop({
---      bgFile = "Interface/Tooltips/UI-Tooltip-Background",
---      edgeFile = "Interface/Tooltips/UI-Tooltip-Border",
---      edgeSize = 10,
---    insets = { left = 1, right = 1, top = 1, bottom = 1 },
---    })
---    RollFrame:SetBackdropColor(0, 0, 1, .33)
+    RollFrame:SetSize(length,64)
     RollFrame.text = RollFrame:CreateFontString(nil,"ARTWORK") 
-    RollFrame.text:SetFont("Fonts\\ARIALN.ttf", 16, "OUTLINE")
+    RollFrame.text:SetFont("Fonts\\ARIALN.ttf", 32, "OUTLINE")
     RollFrame.text:SetPoint("LEFT", 0, 0)
     
     --print(" "..x..". "..color..t[x][1] .." rolled a "..t[x][3].." in range "..t[x][4].."\124r")
@@ -110,22 +113,13 @@ local function DoSort(task)
     end
     RollFrame.text:SetText(" "..x..". "..color..t[x][1] .." rolled a "..t[x][3].." in range "..t[x][4].."\124r")
     RollFrame:Show()
-    length = string.len(RollFrame.text:GetText()) * 6
+    length = string.len(RollFrame.text:GetText()) * 11
     MainFrame:SetSize(length,height)
   end
 
-  height = height + 40
+  height = height + 50
   MainFrame:SetSize(length,height)
-  pos = MainFrame:GetHeight() - 22
-  
---  RollFrame = CreateFrame("Frame","Legend", MainFrame, BackdropTemplateMixin and "BackdropTemplate")
---  RollFrame:SetPoint("TOPLEFT", 1, -1*pos)
---  RollFrame:SetSize(length,21)
---  RollFrame.text = RollFrame:CreateFontString(nil,"ARTWORK") 
---  RollFrame.text:SetFont("Fonts\\ARIALN.ttf", 12, "OUTLINE")
---  RollFrame.text:SetPoint("LEFT", 0, 0)
---  RollFrame.text:SetText(" \"*\" Player has multiple rolls. \">\" Rolls are duplicated.")
-  --MainFrame.text:SetText(fText)
+  pos = MainFrame:GetHeight() - 18
 end
 
 local function OnEvent(self, event, ...)
@@ -172,7 +166,7 @@ function RollLogic:OnCommand(input)
     if input == "on" then
       print("RollLogic is on")
       _Enabled = 1;
-      MainFrame:SetSize(300,96)
+      MainFrame:SetSize(600,120)
       MainFrame:SetPoint("CENTER", 1, 1)
       MainFrame:RegisterEvent("CHAT_MSG_SYSTEM")
       MainFrame:SetScript("OnEvent", OnEvent)
@@ -197,18 +191,12 @@ function RollLogic:OnCommand(input)
         print("Sorry, RollLogic is not enabled!")
       end
     elseif input == "v" or input == "version" then
-        print("Version: 1.0.0.5")
+        print("Version: 1.0.0.6")
     elseif input == "h" or input == "help" then
         print("\"/RollLogic on\" enables the roll logic.\n"   ..
       "        \"/RollLogic off\" disables the roll logic and resets the routines.\n" ..
       "        \"/RollLogic h\" or \"?\" or \"help\" shows valid commands.\n" ..
       "        \"/RollLogic v\" or \"version\" shows current version.\n")
---    else if input == nil
---      if _Enabled == 1 
---        RollLogic:OnCommand("on")
---      else 
---        RollLogic:OnCommand("off")
---      end
     end
   end
 end
@@ -218,7 +206,7 @@ function RollLogic:OnInitialize()
   self.optionsFrame = LibStub("AceConfigDialog-3.0"):AddToBlizOptions("RollLogic", "RollLogic")
   LibStub("AceConfigDialog-3.0"):SetDefaultSize("RollLogic", 400, 250)
   self:RegisterChatCommand("RollLogic", "OnCommand")
-  self:RegisterChatCommand("rl", "OnCommand")
+  self:RegisterChatCommand("rol", "OnCommand")
   self.Db = LibStub("AceDB-3.0"):New("RollLogicContent", defaults, true)
 end
 
@@ -228,7 +216,7 @@ function RollLogic:ADDON_LOADED()
     RollLogic:OnCommand("off")
   end
   MainFrame:SetPoint("CENTER", 1, 1)
-  MainFrame:SetSize(300,96)
+  MainFrame:SetSize(600,120)
   MainFrame:SetBackdrop({
     bgFile = "Interface/Tooltips/UI-Tooltip-Background",
     edgeFile = "Interface/Tooltips/UI-Tooltip-Border",
