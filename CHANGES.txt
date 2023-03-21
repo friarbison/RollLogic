@@ -1,6 +1,10 @@
 # RollLogic
 # Keep track of changes, if just by a brief summary
 # V1.0.0.6
-#   1/26/2021 - Previous releases were trial and error (but this one is different?)  
+#   1/26/2023 - Previous releases were trial and error (but this one is different?)  
 #             - Made the font LARGE.
 #             - Changed the slash command to 'rol' instead of 'rl'.  It was overiding the '/reload/ shortcut.
+# V1.0.0.7
+#   3/21/2023 
+#             - New game version (100007) - The Forbidden Reach release.
+

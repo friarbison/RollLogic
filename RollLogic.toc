@@ -1,12 +1,11 @@
-## Interface: 100005
+## Interface: 100007
 ## Title: RollLogic |cff00aa006.0|r
 ## Author: friarbison
 ## Notes: Organizes rolls |cffB90A04Created by: Friarbison |r
-## Version: 1.0.0.6
+## Version: V1.0.0.7
 ## SavedVariables: RLContent
 ## SavedVariablesPerCharacter: RLPlayerContent
 ## OptionalDeps: Ace3
 ## X-Embeds: Ace3
-
 
 RollLogic.lua
