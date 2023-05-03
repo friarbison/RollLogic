@@ -7,4 +7,7 @@
 # V1.0.0.7
 #   3/21/2023 
 #             - New game version (100007) - The Forbidden Reach release.
+# V1.0.0.8
+#   5/2/2023 
+#             - New game version (10.1.0)
 
