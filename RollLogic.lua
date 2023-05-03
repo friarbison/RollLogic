@@ -191,7 +191,7 @@ function RollLogic:OnCommand(input)
         print("Sorry, RollLogic is not enabled!")
       end
     elseif input == "v" or input == "version" then
-        print("Version: 1.0.0.6")
+        print("Version: 1.0.0.8")
     elseif input == "h" or input == "help" then
         print("\"/RollLogic on\" enables the roll logic.\n"   ..
       "        \"/RollLogic off\" disables the roll logic and resets the routines.\n" ..
