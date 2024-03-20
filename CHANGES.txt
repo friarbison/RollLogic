@@ -10,4 +10,18 @@
 # V1.0.0.8
 #   5/2/2023 
 #             - New game version (10.1.0)
-
+# V1.0.0.9
+#   7/19/2023 
+#             - New game version (10.1.5)
+# V1.0.0.9
+#   9/18/2023 
+#             - New game version (10.1.7)
+# V1.0.0.11
+#   1/16/2024
+#             - Catching up to the current release (10.02.05)
+# V1.0.0.12
+#   3/19/2024
+#             - Update for latest patch (10.02.06)
+# V1.0.0.13
+#   3/20/2024
+#             - Changed the addon "version" process to help me not to forget to udate it along with TOC updates.

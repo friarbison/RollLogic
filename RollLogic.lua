@@ -2,7 +2,7 @@ local RollLogic = LibStub("AceAddon-3.0"):NewAddon("RollLogic", "AceConsole-3.0"
 local CloseButton = CreateFrame("Button", "CloseButton", MainFrame)
 local ClearButton = CreateFrame("Button", "ClearButton", MainFrame)
 local SortButton = CreateFrame("Button", "SortButton", MainFrame)
-local t, Rolls = {}, 1
+local t, Rolls, VERSION = {}, 1, "12.0.0.13"
 local MainFrame = CreateFrame("Frame","MFrame", UIParent, BackdropTemplateMixin and "BackdropTemplate")
 --local RollFrame = nil
 local _Enabled = 0
@@ -191,7 +191,7 @@ function RollLogic:OnCommand(input)
         print("Sorry, RollLogic is not enabled!")
       end
     elseif input == "v" or input == "version" then
-        print("Version: 1.0.0.8")
+        print("Version: " .. VERSION)
     elseif input == "h" or input == "help" then
         print("\"/RollLogic on\" enables the roll logic.\n"   ..
       "        \"/RollLogic off\" disables the roll logic and resets the routines.\n" ..
